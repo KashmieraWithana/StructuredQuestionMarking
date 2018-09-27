@@ -36,28 +36,34 @@ public class questionMarking {
                 question que = new question();
                 int qid = rs.getInt("questionId");
 
-                String sql1 = "SELECT answer,contentMark,markPerKeyword FROM structured_question WHERE structuredqId = '"+ qid +"'";
+
+                String sql1 = "SELECT structuredqId,answer,contentMark,markPerKeyword FROM structured_question WHERE structuredqId = '"+ qid +"'";
                 PreparedStatement pst1 = con.prepareStatement(sql1);
                 ResultSet rs1 = pst1.executeQuery();
                 while(rs1.next())
                 {
 
                     String ans = rs1.getString("answer");
+
+                    System.out.println(ans);
+
                     float cMark = rs1.getFloat("contentMark");
-                    int q_id = rs.getInt("structuredqId");
+                    int q_id = rs1.getInt("structuredqId");
                     que.setTeacherAnswer(ans);
                     que.setContentMark(cMark);
                     que.setPaperId(paperId);
                     que.setQuestionId(q_id);
                     queArray.add(que);
 
-                    studentAnswer stdA = new studentAnswer();
 
-                    String sql2 = "SELECT studentId,studAnswerId FROM student_answer WHERE ( questionId = '"+ qid +"' AND markedStatus = 'false')";
+
+                    String sql2 = "SELECT studentId,studAnswerId FROM student_answer WHERE  questionId = '"+ q_id +"' AND markedStatus = '0'";
                     PreparedStatement pst2 = con.prepareStatement(sql2);
                     ResultSet rs2 = pst2.executeQuery();
+
                     while(rs2.next())
                     {
+                        studentAnswer stdA = new studentAnswer();
                         int sId = rs2.getInt("studentId");
                         int sAnsId = rs2.getInt("studAnswerId");
                         stdA.setTeacherAnswer(ans);
@@ -66,6 +72,8 @@ public class questionMarking {
                         stdA.setStudentAnswerId(sAnsId);
                         stdA.setContentMark(cMark);
 
+                        System.out.println(sId);
+
                         String sql3 = "SELECT stdanswer FROM structured_stud_answer WHERE structuredStudAnsId = '"+ sAnsId +"' ";
                         PreparedStatement pst3 = con.prepareStatement(sql3);
                         ResultSet rs3 = pst3.executeQuery();
@@ -73,9 +81,11 @@ public class questionMarking {
                         {
                            String stdans = rs3.getString("stdanswer");
                            stdA.setStudentAnswer(stdans);
-                            stdAnsArray.add(stdA);
+                           stdAnsArray.add(stdA);
+                           System.out.println(stdans);
 
                         }
+
 
                     }
 
@@ -105,6 +115,7 @@ public class questionMarking {
                 System.out.println(s.getStudentAnswer());
                 System.out.println("\nSemantic Similarity Score   : "+semanticSimilarityScore);
             }
+            
 
 
 
