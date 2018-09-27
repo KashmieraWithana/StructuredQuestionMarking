@@ -1,5 +1,5 @@
 package questionPaperMarking;
-import annotationreader.DBConnect;
+import datareader.DBConnect;
 import edu.stanford.nlp.pipeline.Annotation;
 import featureextractor.semanticsimilarity.SemanticSentenceSimilarity;
 import utils.NLPUtils;
