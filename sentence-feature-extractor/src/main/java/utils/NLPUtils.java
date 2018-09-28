@@ -20,7 +20,7 @@ import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.semgraph.SemanticGraphEdge;
 import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.trees.*;
-import Negation.ReferenceModel;
+//import Negation.ReferenceModel;
 
 public class NLPUtils {
 
@@ -199,11 +199,8 @@ public class NLPUtils {
         return entities;
     }
 
-    /**
-     * @param annotation     annotated string - targetSentence + " " + sourceSentence
-     * @return arraylist containing two changed sentences sourceSentence-0 , targetSentence-1
-     */
-    public ArrayList<String> replaceCoreferences(Annotation annotation) {
+
+   /* public ArrayList<String> replaceCoreferences(Annotation annotation) {
         ArrayList<ArrayList<String>> sentenceWords = new ArrayList<>();
         ArrayList<ArrayList<String>> replaceSentenceWords = new ArrayList<>();
         ArrayList<ArrayList<Integer>> unReplacableIndices = new ArrayList<>();
@@ -290,7 +287,7 @@ public class NLPUtils {
 
 
         return new ArrayList<>(Arrays.asList(sourceSentence, targetSentence));
-    }
+    }*/
 
     public AnnotationPipeline getPipeline() {
         return pipeline;

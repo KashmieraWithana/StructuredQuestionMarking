@@ -1,7 +1,9 @@
 package questionPaperMarking;
 
 import java.util.ArrayList;
+import java.util.Properties;
 
+import Negation.CheckNegation;
 import edu.stanford.nlp.pipeline.Annotation;
 import featureextractor.cosinesimilarity.AdjectiveSimilarity;
 import featureextractor.cosinesimilarity.NounSimilarity;
@@ -18,7 +20,24 @@ public class CheckAllFeatures {
 	
 	public static void main(String[] args) {
 		
-		NLPUtils nlpUtils = new NLPUtils("tokenize,ssplit,pos");
+		//NLPUtils nlpUtils = new NLPUtils("tokenize,ssplit,pos");
+
+		//new
+
+		// set up pipeline properties
+		Properties props = new Properties();
+		props.setProperty("annotators", "tokenize,ssplit,pos,lemma,ner,parse");
+		// use faster shift reduce parser
+		props.setProperty("parse.model", "edu/stanford/nlp/models/srparser/englishSR.ser.gz");
+		props.setProperty("parse.maxlen", "100");
+		// set up Stanford CoreNLP pipeline
+		// StanfordCoreNLP pipeline = new StanfordCoreNLP(props);
+
+		NLPUtils nlpUtils = new NLPUtils(props);
+
+
+		//end new
+
 		
 	    String sourceSentence = "A database is a collection of information which can be easily accessed, managed and updated.";
 	    String targetSentence = "A database is a collection of information that is organized so that it can be easily accessed, managed and updated ";
@@ -52,6 +71,13 @@ public class CheckAllFeatures {
 	    Similarity adjectiveSimilarity = new AdjectiveSimilarity(sourceAnnotation, targetAnnotation, nlpUtils) ;
 	    double scoreAdjectivesSimilarity = adjectiveSimilarity.similarityScore();
 	    System.out.println("Adjective Similarity Score  : "+ scoreAdjectivesSimilarity);
+
+	    Integer score = CheckNegation.checkRelationsForOppositeness(nlpUtils,targetSentence,sourceSentence);
+	    if(score>0){
+			System.out.println("Negation : true");
+		}else{
+			System.out.println("Negation : false");
+		}
         
         
 	}
